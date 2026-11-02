@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# =============================================================================
+# PROYECTO: Backend Recomendador de Maquillaje (Supabase + Gemini API)
+# ARCHIVO: gemini_request.curl
+# DESCRIPCIÓN: Script cURL ejecutable para probar la API de Google AI Studio
+# =============================================================================
+
+# 1. Verificación de la API Key requerida
+if [ -z "${GEMINI_API_KEY}" ]; then
+  echo "ERROR: La variable de entorno GEMINI_API_KEY no está configurada." >&2
+  echo "Por favor ejecute:" >&2
+  echo "  export GEMINI_API_KEY=\"AIzaSy...TuClaveDeGoogleAIStudio...\"" >&2
+  echo "O en Windows PowerShell:" >&2
+  echo "  \$env:GEMINI_API_KEY=\"AIzaSy...\"" >&2
+  exit 1
+fi
+
+# 2. Configuración de endpoint del modelo (gemini-2.5-flash o gemini-1.5-flash)
+MODEL_NAME="${GEMINI_MODEL:-gemini-2.5-flash}"
+API_URL="https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent"
+
+# 3. Imagen de prueba en Base64 (1x1 pixel JPEG neutro de ejemplo sintético)
+# Si desea enviar una imagen local real de un rostro, puede exportar:
+#   export BASE64_IMAGE=$(base64 -w 0 ruta/a/tu/rostro.jpg)
+SAMPLE_BASE64="${BASE64_IMAGE:-/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=}"
+
+echo "Enviando solicitud a Google AI Studio (${MODEL_NAME})..."
+
+# 4. Invocación cURL a la API REST de Gemini
+curl -s -S -X POST "${API_URL}" \
+  -H "Content-Type: application/json" \
+  -H "x-goog-api-key: ${GEMINI_API_KEY}" \
+  -d @- <<EOF
+{
+  "systemInstruction": {
+    "parts": [
+      {
+        "text": "Eres una inteligencia artificial experta en visagismo, dermatología cosmética y colorimetría profesional para maquillaje. Tu tarea es analizar fotografías de rostros humanos para determinar el subtono cutáneo predominante (Cálido, Frío o Neutro). Si no hay un rostro humano claramente visible, debes indicarlo sin emitir un diagnóstico falso."
+      }
+    ]
+  },
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "text": "Analiza la imagen adjunta. Detecta si contiene un rostro humano y clasifica con precisión su subtono de piel en una de las tres categorías permitidas: 'Cálido', 'Frío' o 'Neutro'. Proporciona un resumen breve justificando la decisión basándote en los matices observados (dorados/amarillos para Cálido, rosados/azulados para Frío, o balance neutro sin dominancia evidente)."
+        },
+        {
+          "inlineData": {
+            "mimeType": "image/jpeg",
+            "data": "${SAMPLE_BASE64}"
+          }
+        }
+      ]
+    }
+  ],
+  "generationConfig": {
+    "temperature": 0.1,
+    "responseMimeType": "application/json",
+    "responseSchema": {
+      "type": "OBJECT",
+      "properties": {
+        "rostro_detectado": {
+          "type": "BOOLEAN",
+          "description": "Verdadero si la imagen contiene un rostro humano claramente perceptible y analizable; falso en caso contrario."
+        },
+        "subtono": {
+          "type": "STRING",
+          "description": "Subtono cutáneo clasificado del rostro principal. Si no se detectó rostro, debe retornar 'Neutro' por defecto.",
+          "enum": [
+            "Cálido",
+            "Frío",
+            "Neutro"
+          ]
+        },
+        "resumen_breve": {
+          "type": "STRING",
+          "description": "Explicación concisa (1 a 3 frases) detallando los matices cutáneos detectados que justifican el subtono asignado."
+        }
+      },
+      "required": [
+        "rostro_detectado",
+        "subtono",
+        "resumen_breve"
+      ]
+    }
+  }
+}
+EOF
+
+echo ""

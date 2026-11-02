@@ -1,0 +1,499 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Google AI Studio - Gemini Vision Analysis API (Colorimetría Facial)",
+    "description": "Especificación técnica REST para el análisis multimodal de imágenes faciales y clasificación dermatológica de subtono cutáneo (Cálido, Frío, Neutro) con salida estructurada JSON garantizada.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Equipo de Desarrollo Backend",
+      "url": "https://ai.google.dev"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://generativelanguage.googleapis.com/v1beta",
+      "description": "Servidor de Producción de Google AI Studio (API v1beta)"
+    }
+  ],
+  "paths": {
+    "/models/gemini-2.5-flash:generateContent": {
+      "post": {
+        "summary": "Analizar imagen facial y predecir subtono de maquillaje",
+        "description": "Envía una imagen facial codificada en Base64 o referencia de File API junto con instrucciones para clasificar el subtono en 'Cálido', 'Frío' o 'Neutro' con salida JSON forzada.",
+        "operationId": "generateContentFacialAnalysis",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          },
+          {
+            "QueryApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "description": "API Key alternativa pasada como query parameter en lugar de cabecera HTTP.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Payload multimodal que incluye instrucciones de sistema, contenido del usuario con la imagen Base64, y configuración de generación forzando JSON estructurado.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GeminiGenerateContentRequest"
+              },
+              "examples": {
+                "analisis_rostro_base64": {
+                  "summary": "Petición estándar con imagen Base64",
+                  "value": {
+                    "systemInstruction": {
+                      "parts": [
+                        {
+                          "text": "Eres una inteligencia artificial experta en visagismo, dermatología cosmética y colorimetría profesional para maquillaje. Tu tarea es analizar fotografías de rostros humanos para determinar el subtono cutáneo predominante (Cálido, Frío o Neutro). Si no hay un rostro humano claramente visible, debes indicarlo sin emitir un diagnóstico falso."
+                        }
+                      ]
+                    },
+                    "contents": [
+                      {
+                        "role": "user",
+                        "parts": [
+                          {
+                            "text": "Analiza la imagen adjunta. Detecta si contiene un rostro humano y clasifica con precisión su subtono de piel en una de las tres categorías permitidas: 'Cálido', 'Frío' o 'Neutro'. Proporciona un resumen breve justificando la decisión basándote en los matices observados (dorados/amarillos para Cálido, rosados/azulados para Frío, o balance neutro sin dominancia evidente)."
+                          },
+                          {
+                            "inlineData": {
+                              "mimeType": "image/jpeg",
+                              "data": "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA="
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "generationConfig": {
+                      "temperature": 0.1,
+                      "responseMimeType": "application/json",
+                      "responseSchema": {
+                        "type": "OBJECT",
+                        "properties": {
+                          "rostro_detectado": {
+                            "type": "BOOLEAN",
+                            "description": "Verdadero si la imagen contiene un rostro humano claramente perceptible y analizable; falso en caso contrario."
+                          },
+                          "subtono": {
+                            "type": "STRING",
+                            "description": "Subtono cutáneo clasificado del rostro principal. Si no se detectó rostro, retorna 'Neutro' por defecto.",
+                            "enum": ["Cálido", "Frío", "Neutro"]
+                          },
+                          "resumen_breve": {
+                            "type": "STRING",
+                            "description": "Explicación concisa (1 a 3 frases) detallando los matices cutáneos detectados que justifican el subtono asignado."
+                          }
+                        },
+                        "required": ["rostro_detectado", "subtono", "resumen_breve"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Respuesta exitosa de Gemini API con el JSON estructurado embebido en el arreglo de candidatos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeminiGenerateContentResponse"
+                },
+                "examples": {
+                  "subtono_calido": {
+                    "summary": "Respuesta: Subtono Cálido Detectado",
+                    "value": {
+                      "candidates": [
+                        {
+                          "content": {
+                            "parts": [
+                              {
+                                "text": "{\n  \"rostro_detectado\": true,\n  \"subtono\": \"Cálido\",\n  \"resumen_breve\": \"Se observan matices dorados y cetrinos prominentes en mejillas y cuello, indicando un subtono cálido que resalta con tonalidades doradas y tierra.\"\n}"
+                              }
+                            ],
+                            "role": "model"
+                          },
+                          "finishReason": "STOP",
+                          "index": 0
+                        }
+                      ],
+                      "usageMetadata": {
+                        "promptTokenCount": 268,
+                        "candidatesTokenCount": 45,
+                        "totalTokenCount": 313
+                      },
+                      "modelVersion": "gemini-2.5-flash"
+                    }
+                  },
+                  "subtono_frio": {
+                    "summary": "Respuesta: Subtono Frío Detectado",
+                    "value": {
+                      "candidates": [
+                        {
+                          "content": {
+                            "parts": [
+                              {
+                                "text": "{\n  \"rostro_detectado\": true,\n  \"subtono\": \"Frío\",\n  \"resumen_breve\": \"Predominan matices rosados y azulados translúcidos en la piel, característicos de una tonalidad fría complementaria con pigmentos plata y rosa.\"\n}"
+                              }
+                            ],
+                            "role": "model"
+                          },
+                          "finishReason": "STOP",
+                          "index": 0
+                        }
+                      ],
+                      "usageMetadata": {
+                        "promptTokenCount": 268,
+                        "candidatesTokenCount": 42,
+                        "totalTokenCount": 310
+                      },
+                      "modelVersion": "gemini-2.5-flash"
+                    }
+                  },
+                  "subtono_neutro": {
+                    "summary": "Respuesta: Subtono Neutro Detectado",
+                    "value": {
+                      "candidates": [
+                        {
+                          "content": {
+                            "parts": [
+                              {
+                                "text": "{\n  \"rostro_detectado\": true,\n  \"subtono\": \"Neutro\",\n  \"resumen_breve\": \"Se aprecia un balance equilibrado entre matices cálidos y fríos sin dominancia evidente, adaptándose tanto a tonalidades doradas como plateadas.\"\n}"
+                              }
+                            ],
+                            "role": "model"
+                          },
+                          "finishReason": "STOP",
+                          "index": 0
+                        }
+                      ],
+                      "usageMetadata": {
+                        "promptTokenCount": 268,
+                        "candidatesTokenCount": 43,
+                        "totalTokenCount": 311
+                      },
+                      "modelVersion": "gemini-2.5-flash"
+                    }
+                  },
+                  "rostro_no_detectado": {
+                    "summary": "Respuesta: Rostro No Detectado",
+                    "value": {
+                      "candidates": [
+                        {
+                          "content": {
+                            "parts": [
+                              {
+                                "text": "{\n  \"rostro_detectado\": false,\n  \"subtono\": \"Neutro\",\n  \"resumen_breve\": \"No se detectó un rostro humano reconocible ni superficie cutánea analizable en la imagen enviada.\"\n}"
+                              }
+                            ],
+                            "role": "model"
+                          },
+                          "finishReason": "STOP",
+                          "index": 0
+                        }
+                      ],
+                      "usageMetadata": {
+                        "promptTokenCount": 268,
+                        "candidatesTokenCount": 38,
+                        "totalTokenCount": 306
+                      },
+                      "modelVersion": "gemini-2.5-flash"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error en argumentos de petición (Base64 corrupto, parámetros no permitidos, o schema incompatible).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeminiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas o no proporcionadas (API Key incorrecta o ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeminiErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Límite de tasa de solicitudes excedido (Rate limit / Quota exceeded).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeminiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models/gemini-1.5-flash:generateContent": {
+      "post": {
+        "summary": "Fallback alternativo en modelo gemini-1.5-flash",
+        "description": "Endpoint idéntico en contrato y estructura de payload utilizando el modelo gemini-1.5-flash para alta disponibilidad o fallback.",
+        "operationId": "generateContentFacialAnalysisFallback",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/paths/~1models~1gemini-2.5-flash:generateContent/post/requestBody"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/paths/~1models~1gemini-2.5-flash:generateContent/post/responses/200"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-goog-api-key",
+        "description": "API Key oficial de Google AI Studio enviada en la cabecera HTTP."
+      },
+      "QueryApiKeyAuth": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "key",
+        "description": "API Key oficial de Google AI Studio enviada en el query parameter de la URL."
+      }
+    },
+    "schemas": {
+      "GeminiGenerateContentRequest": {
+        "type": "object",
+        "required": ["contents"],
+        "properties": {
+          "systemInstruction": {
+            "type": "object",
+            "properties": {
+              "parts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["text"],
+                  "properties": {
+                    "text": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["parts"],
+              "properties": {
+                "role": { "type": "string", "example": "user" },
+                "parts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": { "type": "string" },
+                      "inlineData": {
+                        "$ref": "#/components/schemas/BlobData"
+                      },
+                      "fileData": {
+                        "$ref": "#/components/schemas/FileData"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "generationConfig": {
+            "$ref": "#/components/schemas/GenerationConfig"
+          }
+        }
+      },
+      "BlobData": {
+        "type": "object",
+        "required": ["mimeType", "data"],
+        "properties": {
+          "mimeType": {
+            "type": "string",
+            "enum": ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"],
+            "example": "image/jpeg"
+          },
+          "data": {
+            "type": "string",
+            "description": "Cadena Base64 pura de la imagen, sin cabeceras 'data:image/...;base64,'."
+          }
+        }
+      },
+      "FileData": {
+        "type": "object",
+        "required": ["mimeType", "fileUri"],
+        "properties": {
+          "mimeType": { "type": "string", "example": "image/jpeg" },
+          "fileUri": { "type": "string", "example": "https://generativelanguage.googleapis.com/v1beta/files/abc123xyz" }
+        }
+      },
+      "GenerationConfig": {
+        "type": "object",
+        "properties": {
+          "temperature": {
+            "type": "number",
+            "default": 0.1,
+            "minimum": 0.0,
+            "maximum": 2.0
+          },
+          "responseMimeType": {
+            "type": "string",
+            "enum": ["application/json", "text/plain"],
+            "default": "application/json"
+          },
+          "responseSchema": {
+            "$ref": "#/components/schemas/FacialAnalysisOutputSchema"
+          }
+        }
+      },
+      "FacialAnalysisOutputSchema": {
+        "type": "object",
+        "required": ["type", "properties", "required"],
+        "properties": {
+          "type": { "type": "string", "enum": ["OBJECT"] },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "rostro_detectado": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["BOOLEAN"] },
+                  "description": { "type": "string" }
+                }
+              },
+              "subtono": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["STRING"] },
+                  "description": { "type": "string" },
+                  "enum": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": ["Cálido", "Frío", "Neutro"]
+                  }
+                }
+              },
+              "resumen_breve": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["STRING"] },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          },
+          "required": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["rostro_detectado", "subtono", "resumen_breve"]
+          }
+        }
+      },
+      "StructuredOutputPayload": {
+        "type": "object",
+        "description": "Contenido JSON exacto retornado dentro de candidates[0].content.parts[0].text.",
+        "required": ["rostro_detectado", "subtono", "resumen_breve"],
+        "properties": {
+          "rostro_detectado": {
+            "type": "boolean",
+            "description": "Indica si se detectó un rostro analizable."
+          },
+          "subtono": {
+            "type": "string",
+            "enum": ["Cálido", "Frío", "Neutro"],
+            "description": "Subtono detectado para alimentar la función RPC de Supabase."
+          },
+          "resumen_breve": {
+            "type": "string",
+            "description": "Explicación breve de los matices observados."
+          }
+        }
+      },
+      "GeminiGenerateContentResponse": {
+        "type": "object",
+        "required": ["candidates"],
+        "properties": {
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "object",
+                  "properties": {
+                    "role": { "type": "string" },
+                    "parts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "text": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "finishReason": { "type": "string" },
+                "index": { "type": "integer" }
+              }
+            }
+          },
+          "usageMetadata": {
+            "type": "object",
+            "properties": {
+              "promptTokenCount": { "type": "integer" },
+              "candidatesTokenCount": { "type": "integer" },
+              "totalTokenCount": { "type": "integer" }
+            }
+          },
+          "modelVersion": { "type": "string" }
+        }
+      },
+      "GeminiErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "integer" },
+              "message": { "type": "string" },
+              "status": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

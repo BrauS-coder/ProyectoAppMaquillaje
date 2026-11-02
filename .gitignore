@@ -1,0 +1,18 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno y claves API
+.env
+.env.*
+*.key
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de agentes/herramientas (no relevantes para el proyecto)
+.agents/
+
+# Logs
+*.log
