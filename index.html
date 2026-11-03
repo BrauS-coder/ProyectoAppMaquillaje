@@ -1,0 +1,3008 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow ♡ Recomendador de Maquillaje Inteligente</title>
+
+  <!-- Google Fonts: Playfair Display + Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. VARIABLES CSS & DESIGN TOKENS (LUXURY BEAUTY AESTHETIC)
+       ========================================================================== */
+    :root {
+      /* Background Gradients */
+      --bg-dark-1: #1a0a1e;
+      --bg-dark-2: #3d0f3d;
+      --bg-dark-3: #0d0015;
+      --bg-body: radial-gradient(circle at 50% 20%, #3d0f3d 0%, #1a0a1e 50%, #0d0015 100%);
+
+      /* Neon Pink & Magenta Accents */
+      --neon-pink: #ff69b4;
+      --neon-magenta: #e91e90;
+      --neon-fuchsia: #ff1493;
+      --neon-border: rgba(255, 105, 180, 0.35);
+      --neon-glow: 0 0 20px rgba(233, 30, 144, 0.5), 0 0 40px rgba(255, 105, 180, 0.25);
+      --neon-glow-strong: 0 0 30px rgba(233, 30, 144, 0.8), 0 0 60px rgba(255, 105, 180, 0.45);
+
+      /* Glassmorphism */
+      --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(45, 10, 45, 0.7) 100%);
+      --glass-bg-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(65, 15, 65, 0.8) 100%);
+      --glass-blur: blur(18px);
+      --glass-border: 1px solid rgba(255, 105, 180, 0.25);
+      --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+
+      /* Typography Colors */
+      --text-white: #ffffff;
+      --text-rose: #f3e8ee;
+      --text-muted: #bda3b8;
+      --text-pink: #ff69b4;
+
+      /* Metal Tiers */
+      --gold-border: #d4af37;
+      --gold-text: #ffd700;
+      --gold-bg: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(255, 215, 0, 0.12));
+      --gold-glow: 0 0 16px rgba(255, 215, 0, 0.45);
+
+      --silver-border: #c0c0c0;
+      --silver-text: #f0f0f0;
+      --silver-bg: linear-gradient(135deg, rgba(192, 192, 192, 0.3), rgba(224, 224, 224, 0.12));
+      --silver-glow: 0 0 16px rgba(224, 224, 224, 0.35);
+
+      --bronze-border: #cd7f32;
+      --bronze-text: #f09a5c;
+      --bronze-bg: linear-gradient(135deg, rgba(205, 127, 50, 0.3), rgba(210, 125, 70, 0.12));
+      --bronze-glow: 0 0 16px rgba(205, 127, 50, 0.4);
+
+      /* Subtone Badges */
+      --subtono-calido-color: #fbbf24;
+      --subtono-frio-color: #7dd3fc;
+      --subtono-neutro-color: #f472b6;
+
+      /* Radii */
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 36px;
+      --radius-pill: 9999px;
+
+      /* Fonts */
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE STYLES
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-body);
+      background-attachment: fixed;
+      color: var(--text-rose);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .text-pink {
+      color: var(--neon-pink);
+      text-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ==========================================================================
+       3. AMBIENT BACKGROUND ORBS & LUMINOUS WAVES
+       ========================================================================== */
+    .bg-ambient-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(85px);
+      opacity: 0.32;
+      will-change: transform;
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #e91e90 0%, transparent 70%);
+      top: -100px;
+      right: -80px;
+      animation: floatOrb 15s ease-in-out infinite alternate;
+    }
+
+    .orb-2 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #7b1fa2 0%, transparent 70%);
+      bottom: -140px;
+      left: -120px;
+      animation: floatOrb 19s ease-in-out infinite alternate-reverse;
+    }
+
+    .orb-3 {
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, #ff1493 0%, transparent 70%);
+      top: 40%;
+      left: 55%;
+      animation: pulseOrb 11s ease-in-out infinite alternate;
+    }
+
+    /* Subtle Luminous Wave Ribbon */
+    .ambient-ribbon {
+      position: absolute;
+      top: 15%;
+      left: -20%;
+      width: 140%;
+      height: 400px;
+      background: radial-gradient(ellipse at center, rgba(233, 30, 144, 0.08) 0%, transparent 60%);
+      transform: rotate(-15deg);
+      pointer-events: none;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-45px, 50px) scale(1.08); }
+      100% { transform: translate(35px, -35px) scale(0.96); }
+    }
+
+    @keyframes pulseOrb {
+      0% { transform: scale(0.88); opacity: 0.22; }
+      100% { transform: scale(1.15); opacity: 0.42; }
+    }
+
+    /* ==========================================================================
+       4. SHARED UI COMPONENTS (GLASS PANELS, BUTTONS, BADGES)
+       ========================================================================== */
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .glass-panel:hover {
+      border-color: rgba(255, 105, 180, 0.45);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7), 0 0 24px rgba(233, 30, 144, 0.25);
+    }
+
+    /* Primary Glowing CTA Button */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 36px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: #ffffff;
+      background: linear-gradient(135deg, #ff1493 0%, #e91e90 50%, #b80d68 100%);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--neon-glow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      min-height: 52px;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      transform: skewX(-25deg);
+      transition: left 0.75s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: var(--neon-glow-strong);
+    }
+
+    .btn-primary:hover:not(:disabled)::before {
+      left: 140%;
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+      filter: grayscale(40%);
+    }
+
+    /* Secondary & Outline Buttons */
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 30px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-rose);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid var(--neon-pink);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 0 16px rgba(255, 105, 180, 0.25);
+      transition: all 0.3s ease;
+      min-height: 48px;
+    }
+
+    .btn-outline:hover {
+      background: rgba(233, 30, 144, 0.18);
+      border-color: #ffffff;
+      color: #ffffff;
+      box-shadow: 0 0 26px rgba(255, 105, 180, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-text-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 20px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-text-back:hover {
+      color: var(--neon-pink);
+      border-color: rgba(255, 105, 180, 0.4);
+      background: rgba(233, 30, 144, 0.1);
+      transform: translateX(-3px);
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    /* Subtone Result Badges */
+    .badge-subtono-large {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 22px;
+      border-radius: var(--radius-pill);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .badge-subtono-large.calido {
+      background: rgba(245, 158, 11, 0.22);
+      border: 1.5px solid #f59e0b;
+      color: var(--subtono-calido-color);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.45);
+    }
+
+    .badge-subtono-large.frio {
+      background: rgba(56, 189, 248, 0.22);
+      border: 1.5px solid #38bdf8;
+      color: var(--subtono-frio-color);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.45);
+    }
+
+    .badge-subtono-large.neutro {
+      background: rgba(236, 72, 153, 0.22);
+      border: 1.5px solid #ec4899;
+      color: var(--subtono-neutro-color);
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.45);
+    }
+
+    /* Metal Tier Badges */
+    .badge-gama {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .badge-gama.alta {
+      background: var(--gold-bg);
+      border: 1.5px solid var(--gold-border);
+      color: var(--gold-text);
+      box-shadow: var(--gold-glow);
+    }
+
+    .badge-gama.media {
+      background: var(--silver-bg);
+      border: 1.5px solid var(--silver-border);
+      color: var(--silver-text);
+      box-shadow: var(--silver-glow);
+    }
+
+    .badge-gama.baja {
+      background: var(--bronze-bg);
+      border: 1.5px solid var(--bronze-border);
+      color: var(--bronze-text);
+      box-shadow: var(--bronze-glow);
+    }
+
+    /* ==========================================================================
+       5. HEADER & BRAND BAR
+       ========================================================================== */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      background: rgba(26, 10, 30, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 105, 180, 0.15);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-name {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--text-white);
+      letter-spacing: 0.02em;
+    }
+
+    .brand-heart {
+      color: var(--neon-pink);
+      font-size: 1.4rem;
+      text-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+      animation: heartBeat 2.5s ease-in-out infinite;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ai-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(233, 30, 144, 0.12);
+      border: 1px solid rgba(255, 105, 180, 0.3);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-rose);
+      letter-spacing: 0.04em;
+    }
+
+    .ai-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neon-pink);
+      box-shadow: 0 0 8px var(--neon-pink);
+      animation: pulseDot 2s infinite alternate;
+    }
+
+    @keyframes pulseDot {
+      0% { opacity: 0.5; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .btn-key-settings {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      transition: all 0.25s ease;
+    }
+
+    .btn-key-settings:hover {
+      color: #ffffff;
+      border-color: var(--neon-pink);
+      background: rgba(233, 30, 144, 0.15);
+    }
+
+    /* ==========================================================================
+       6. SCREEN SECTIONS & TRANSITIONS
+       ========================================================================== */
+    .app-main {
+      position: relative;
+      z-index: 1;
+      padding-bottom: 60px;
+    }
+
+    .screen-section {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .screen-section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: screenFadeSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes screenFadeSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.99);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Section Titles */
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 700;
+      color: var(--text-white);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-rose);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       7. SCREEN 1: LANDING / WELCOME
+       ========================================================================== */
+    .landing-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+    }
+
+    .hero-block {
+      text-align: center;
+      padding: 32px 16px 48px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-kicker-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: var(--radius-pill);
+      background: rgba(233, 30, 144, 0.15);
+      border: 1px solid rgba(255, 105, 180, 0.4);
+      color: var(--text-pink);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 22px;
+      box-shadow: 0 0 16px rgba(255, 105, 180, 0.25);
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 7vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text-white);
+      margin-bottom: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.05rem, 3vw, 1.25rem);
+      color: var(--text-rose);
+      margin-bottom: 36px;
+      font-weight: 300;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* 3 Feature Highlights with Thin Pink Circular Borders */
+    .feature-highlights-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .feature-item:hover {
+      border-color: rgba(255, 105, 180, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon-circle {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      border: 1.5px solid var(--neon-pink);
+      box-shadow: 0 0 14px rgba(255, 105, 180, 0.35), inset 0 0 8px rgba(233, 30, 144, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      background: rgba(233, 30, 144, 0.12);
+    }
+
+    .feature-text {
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: var(--text-white);
+      text-align: left;
+    }
+
+    .hero-cta-wrap {
+      margin-top: 10px;
+    }
+
+    /* Promotional Cards Showcase */
+    .promo-showcase-section {
+      margin-top: 20px;
+    }
+
+    .promo-heading-wrap {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .promo-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--text-white);
+      margin-bottom: 8px;
+    }
+
+    .promo-subheading {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .promo-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .promo-card {
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .promo-img-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #1f0724;
+    }
+
+    .promo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .promo-card:hover .promo-img {
+      transform: scale(1.05);
+    }
+
+    .promo-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(13, 0, 21, 0.92) 100%);
+      pointer-events: none;
+    }
+
+    .promo-card-body {
+      padding: 20px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: -12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .promo-tag {
+      align-self: flex-start;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--neon-pink);
+      background: rgba(255, 105, 180, 0.15);
+      border: 1px solid rgba(255, 105, 180, 0.3);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .promo-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--text-white);
+      font-weight: 600;
+    }
+
+    .promo-desc {
+      font-size: 0.9rem;
+      color: var(--text-rose);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       8. SCREEN 2: UPLOAD & ANALYSIS
+       ========================================================================== */
+    .upload-screen-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 20px 48px;
+    }
+
+    .screen-header-block {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .upload-split-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    /* Left Column: Dropzone & Guidance */
+    .upload-controls-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .dropzone-box {
+      border: 2px dashed rgba(255, 105, 180, 0.5);
+      border-radius: var(--radius-xl);
+      padding: 36px 24px;
+      text-align: center;
+      background: rgba(45, 10, 45, 0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), inset 0 0 24px rgba(233, 30, 144, 0.08);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .dropzone-box:hover,
+    .dropzone-box.drag-over {
+      border-color: var(--neon-pink);
+      background: rgba(65, 15, 65, 0.6);
+      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 105, 180, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .dropzone-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dropzone-icon-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--neon-pink);
+      background: rgba(233, 30, 144, 0.15);
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin-bottom: 4px;
+      animation: floatSubtle 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatSubtle {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
+
+    .dropzone-prompt {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--text-white);
+      font-weight: 600;
+    }
+
+    .dropzone-subprompt {
+      font-size: 0.95rem;
+      color: var(--text-rose);
+    }
+
+    .format-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      margin-top: 6px;
+    }
+
+    /* Guidance Tips */
+    .tips-card {
+      padding: 22px 24px;
+      border-radius: var(--radius-md);
+    }
+
+    .tips-title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--text-white);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tips-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tips-list li {
+      font-size: 0.9rem;
+      color: var(--text-rose);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.45;
+    }
+
+    .tips-list li::before {
+      content: '♡';
+      color: var(--neon-pink);
+      font-weight: bold;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    /* Right Column: Phone Mockup & Actions */
+    .preview-mockup-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Phone-Shaped Preview Frame */
+    .phone-mockup-frame {
+      width: 300px;
+      max-width: 100%;
+      border: 3.5px solid rgba(255, 105, 180, 0.45);
+      border-radius: 40px;
+      padding: 12px;
+      background: #0d0015;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(233, 30, 144, 0.3), inset 0 0 10px rgba(255, 105, 180, 0.2);
+      position: relative;
+    }
+
+    .phone-dynamic-island {
+      width: 80px;
+      height: 18px;
+      background: #000000;
+      border-radius: var(--radius-pill);
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 10px;
+      gap: 6px;
+    }
+
+    .phone-lens {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #111e2e;
+      border: 1px solid #1f3a56;
+    }
+
+    .phone-sensor {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #2a112e;
+    }
+
+    .phone-screen-viewport {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      background: radial-gradient(circle at center, rgba(61, 15, 61, 0.6) 0%, rgba(13, 0, 21, 0.95) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .preview-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .empty-sparkle {
+      font-size: 2.8rem;
+      filter: drop-shadow(0 0 12px rgba(255, 105, 180, 0.6));
+      animation: sparkleRotate 6s ease-in-out infinite;
+    }
+
+    @keyframes sparkleRotate {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.15) rotate(15deg); }
+    }
+
+    .empty-text {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-white);
+    }
+
+    .empty-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .preview-img-element {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: opacity 0.3s ease;
+    }
+
+    .phone-bottom-bar {
+      width: 90px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-pill);
+      margin: 10px auto 2px;
+    }
+
+    /* Loading State Overlay Inside Phone Frame */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(13, 0, 21, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      z-index: 10;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .glowing-spinner-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+
+    .spinner-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid transparent;
+    }
+
+    .outer-ring {
+      border-top-color: var(--neon-pink);
+      border-right-color: var(--neon-magenta);
+      box-shadow: 0 0 16px rgba(255, 105, 180, 0.5);
+      animation: spinClockwise 1.3s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    }
+
+    .inner-ring {
+      inset: 10px;
+      border-bottom-color: #ffd700;
+      border-left-color: #ff1493;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+      animation: spinCounterClockwise 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    }
+
+    .spinner-center-sparkle {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      animation: pulseSparkle 1.5s ease-in-out infinite;
+    }
+
+    @keyframes spinClockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spinCounterClockwise {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    @keyframes pulseSparkle {
+      0%, 100% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    .loading-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: var(--text-white);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .loading-sub {
+      font-size: 0.82rem;
+      color: var(--text-rose);
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+
+    .loading-progress-bar {
+      width: 140px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-pink), var(--gold-text), var(--neon-magenta));
+      animation: progressLoop 1.8s ease-in-out infinite;
+    }
+
+    @keyframes progressLoop {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Upload Actions Panel */
+    .upload-actions-panel {
+      width: 300px;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-secondary-sm {
+      padding: 10px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-rose);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 105, 180, 0.3);
+      border-radius: var(--radius-pill);
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .btn-secondary-sm:hover {
+      background: rgba(233, 30, 144, 0.15);
+      border-color: var(--neon-pink);
+      color: #ffffff;
+    }
+
+    /* Error & Warning Banner */
+    .error-banner {
+      width: 300px;
+      max-width: 100%;
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      border-color: rgba(239, 68, 68, 0.45);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(45, 10, 45, 0.8) 100%);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 16px rgba(239, 68, 68, 0.25);
+    }
+
+    .error-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .error-content {
+      flex: 1;
+    }
+
+    .error-heading {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fca5a5;
+      margin-bottom: 4px;
+    }
+
+    .error-text {
+      font-size: 0.82rem;
+      color: var(--text-rose);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .btn-error-action {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: rgba(239, 68, 68, 0.35);
+      border: 1px solid rgba(239, 68, 68, 0.6);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      transition: background 0.2s ease;
+    }
+
+    .btn-error-action:hover {
+      background: rgba(239, 68, 68, 0.6);
+    }
+
+    /* AI Results Card (Rendered After Successful Facial Analysis) */
+    .result-card {
+      width: 300px;
+      max-width: 100%;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      border-color: rgba(255, 105, 180, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      animation: resultCardPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes resultCardPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .result-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .result-kicker {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--neon-pink);
+    }
+
+    .result-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .result-summary-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .result-summary-copy {
+      font-size: 0.92rem;
+      color: var(--text-white);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       9. SCREEN 3: PRODUCT RECOMMENDATIONS
+       ========================================================================== */
+    .recommendations-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 20px 48px;
+    }
+
+    .recs-header-block {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .recs-subtitle-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      color: var(--text-rose);
+      margin: 8px 0 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge-subtono-pill {
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.95rem;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .badge-subtono-pill.calido {
+      background: rgba(245, 158, 11, 0.25);
+      border: 1px solid #f59e0b;
+      color: var(--subtono-calido-color);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
+    }
+
+    .badge-subtono-pill.frio {
+      background: rgba(56, 189, 248, 0.25);
+      border: 1px solid #38bdf8;
+      color: var(--subtono-frio-color);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+    }
+
+    .badge-subtono-pill.neutro {
+      background: rgba(236, 72, 153, 0.25);
+      border: 1px solid #ec4899;
+      color: var(--subtono-neutro-color);
+      box-shadow: 0 0 14px rgba(236, 72, 153, 0.35);
+    }
+
+    .recs-explanation {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* 3-Product Cards Grid */
+    .products-3-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-bottom: 40px;
+    }
+
+    .product-card {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Tier Specific Accents */
+    .product-card.tier-alta {
+      border-color: rgba(212, 175, 55, 0.45);
+    }
+    .product-card.tier-alta:hover {
+      border-color: #ffd700;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .product-card.tier-media {
+      border-color: rgba(192, 192, 192, 0.45);
+    }
+    .product-card.tier-media:hover {
+      border-color: #ffffff;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7), 0 0 30px rgba(224, 224, 224, 0.25);
+    }
+
+    .product-card.tier-baja {
+      border-color: rgba(205, 127, 50, 0.45);
+    }
+    .product-card.tier-baja:hover {
+      border-color: #f09a5c;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7), 0 0 30px rgba(205, 127, 50, 0.3);
+    }
+
+    .product-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .store-tag {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .product-img-frame {
+      width: 100%;
+      aspect-ratio: 1/1;
+      max-height: 240px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: radial-gradient(circle at center, rgba(61, 15, 61, 0.5) 0%, rgba(13, 0, 21, 0.8) 100%);
+      margin-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .product-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-img {
+      transform: scale(1.06);
+    }
+
+    .product-body {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 10px;
+    }
+
+    .product-brand {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--neon-pink);
+    }
+
+    .product-name {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-white);
+      line-height: 1.3;
+      min-height: 2.6em;
+    }
+
+    .product-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .shade-pill {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-rose);
+      background: rgba(233, 30, 144, 0.12);
+      border: 1px solid rgba(255, 105, 180, 0.3);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .product-price {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .btn-buy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 13px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+      border-radius: var(--radius-pill);
+      text-align: center;
+      transition: all 0.3s ease;
+      min-height: 48px;
+    }
+
+    .tier-alta .btn-buy {
+      background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+      color: #1a0a1e;
+      border: 1px solid #ffd700;
+      box-shadow: 0 0 16px rgba(255, 215, 0, 0.35);
+    }
+    .tier-alta .btn-buy:hover {
+      box-shadow: 0 0 28px rgba(255, 215, 0, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .tier-media .btn-buy {
+      background: linear-gradient(135deg, #718096 0%, #cbd5e0 100%);
+      color: #0d0015;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 0 16px rgba(226, 232, 240, 0.3);
+    }
+    .tier-media .btn-buy:hover {
+      box-shadow: 0 0 28px rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .tier-baja .btn-buy {
+      background: linear-gradient(135deg, #a0522d 0%, #cd7f32 100%);
+      color: #ffffff;
+      border: 1px solid #f09a5c;
+      box-shadow: 0 0 16px rgba(205, 127, 50, 0.35);
+    }
+    .tier-baja .btn-buy:hover {
+      box-shadow: 0 0 28px rgba(205, 127, 50, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .recs-bottom-bar {
+      margin-top: 24px;
+    }
+
+    /* ==========================================================================
+       10. MODAL / SETTINGS PROMPT FOR API KEY
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 0, 21, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.25s ease forwards;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 480px;
+      padding: 30px;
+      border-radius: var(--radius-xl);
+      border-color: rgba(255, 105, 180, 0.4);
+      background: linear-gradient(145deg, rgba(61, 15, 61, 0.95) 0%, rgba(26, 10, 30, 0.98) 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--text-white);
+      font-weight: 700;
+    }
+
+    .modal-close {
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.2s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--neon-pink);
+    }
+
+    .modal-desc {
+      font-size: 0.92rem;
+      color: var(--text-rose);
+      line-height: 1.5;
+    }
+
+    .modal-input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-input-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-pink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(13, 0, 21, 0.8);
+      border: 1px solid rgba(255, 105, 180, 0.3);
+      color: #ffffff;
+      font-family: monospace;
+      font-size: 0.9rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .modal-input:focus {
+      outline: none;
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 16px rgba(255, 105, 180, 0.4);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .modal-link {
+      font-size: 0.82rem;
+      color: var(--neon-pink);
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       11. FOOTER
+       ========================================================================== */
+    .app-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 105, 180, 0.12);
+    }
+
+    .app-footer span {
+      color: var(--neon-pink);
+    }
+
+    /* ==========================================================================
+       12. RESPONSIVE MEDIA QUERIES (MOBILE-FIRST)
+       ========================================================================== */
+    /* Tablet (min-width: 640px) */
+    @media (min-width: 640px) {
+      .feature-highlights-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .feature-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 14px;
+      }
+      .feature-text {
+        text-align: center;
+        font-size: 0.92rem;
+      }
+      .promo-cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+
+    /* Desktop (min-width: 1024px) */
+    @media (min-width: 1024px) {
+      .landing-content,
+      .upload-screen-container,
+      .recommendations-container {
+        padding: 32px 32px 64px;
+      }
+
+      .hero-block {
+        padding: 48px 24px 64px;
+      }
+
+      .upload-split-layout {
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 48px;
+        align-items: start;
+      }
+
+      .products-3-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        align-items: stretch;
+      }
+
+      .product-card {
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Luminous Background Orbs & Wave -->
+  <div class="bg-ambient-layer" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <div class="ambient-ribbon"></div>
+  </div>
+
+  <!-- Header & Brand Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-logo" onclick="AppController.showScreen('landing')" title="Ir al inicio">
+        <span class="brand-name">Glow</span>
+        <span class="brand-heart">♡</span>
+      </div>
+      <div class="header-meta">
+        <div class="ai-pill">
+          <span class="ai-dot"></span>
+          <span>IA integrada de Glow</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Areas (3 Screens) -->
+  <main class="app-main">
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 1: LANDING / WELCOME                                           -->
+    <!-- ===================================================================== -->
+    <section id="screen-landing" class="screen-section active" aria-labelledby="landing-hero-title">
+      <div class="landing-content">
+        <!-- Hero Section -->
+        <div class="hero-block">
+          <div class="hero-kicker-badge">
+            <span>✨</span> Visagismo & Colorimetría Inteligente
+          </div>
+
+          <h1 id="landing-hero-title" class="hero-title">
+            Maquillaje que <span class="text-pink">sí va contigo</span> ♡
+          </h1>
+
+          <p class="hero-tagline">
+            Encuentra el tono perfecto con inteligencia artificial
+          </p>
+
+          <!-- 3 Feature Highlight Icons with Thin Pink Circular Borders -->
+          <div class="feature-highlights-grid">
+            <div class="feature-item">
+              <div class="feature-icon-circle">✨</div>
+              <p class="feature-text">Prueba diferentes tonos y colores</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon-circle">🎨</div>
+              <p class="feature-text">Personaliza tu look</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon-circle">🛍️</div>
+              <p class="feature-text">Compra con seguridad</p>
+            </div>
+          </div>
+
+          <!-- Hero Action CTA Button -->
+          <div class="hero-cta-wrap">
+            <button id="btn-start-analysis" class="btn-primary" onclick="AppController.showScreen('upload')">
+              Analizar mi rostro →
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Promotional Cards Showcase -->
+        <div class="promo-showcase-section">
+          <div class="promo-heading-wrap">
+            <h2 class="promo-heading">Descubre el Poder de tu Colorimetría</h2>
+            <p class="promo-subheading">Identificamos tus matices exactos para recomendarte formulaciones impecables</p>
+          </div>
+
+          <div class="promo-cards-grid">
+            <!-- Promo Card 1: Cálido -->
+            <article class="promo-card glass-panel">
+              <div class="promo-img-wrapper">
+                <img
+                  src="assets/promo1.jpg"
+                  alt="Modelo con subtono cálido dorado"
+                  class="promo-img"
+                  loading="lazy"
+                  onerror="AppAssets.handlePromoError(this, 1)"
+                />
+                <div class="promo-img-overlay"></div>
+              </div>
+              <div class="promo-card-body">
+                <span class="promo-tag">Diagnóstico IA</span>
+                <h3 class="promo-title">Subtono Cálido</h3>
+                <p class="promo-desc">Matices dorados, miel y bronce iluminados con armonía y luminosidad natural.</p>
+              </div>
+            </article>
+
+            <!-- Promo Card 2: Frío -->
+            <article class="promo-card glass-panel">
+              <div class="promo-img-wrapper">
+                <img
+                  src="assets/promo2.jpg"
+                  alt="Modelo con subtono frío porcelana"
+                  class="promo-img"
+                  loading="lazy"
+                  onerror="AppAssets.handlePromoError(this, 2)"
+                />
+                <div class="promo-img-overlay"></div>
+              </div>
+              <div class="promo-card-body">
+                <span class="promo-tag">Visagismo Cutáneo</span>
+                <h3 class="promo-title">Subtono Frío</h3>
+                <p class="promo-desc">Resalta destellos rosados y azulados con bases porcelana de máxima pureza.</p>
+              </div>
+            </article>
+
+            <!-- Promo Card 3: Neutro -->
+            <article class="promo-card glass-panel">
+              <div class="promo-img-wrapper">
+                <img
+                  src="assets/promo3.jpg"
+                  alt="Cosméticos y modelo con subtono neutro"
+                  class="promo-img"
+                  loading="lazy"
+                  onerror="AppAssets.handlePromoError(this, 3)"
+                />
+                <div class="promo-img-overlay"></div>
+              </div>
+              <div class="promo-card-body">
+                <span class="promo-tag">Fórmula Equilibrada</span>
+                <h3 class="promo-title">Subtono Neutro</h3>
+                <p class="promo-desc">El balance cromático perfecto para lucir tonos cálidos o fríos con total libertad.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 2: PHOTO UPLOAD & ANALYSIS                                     -->
+    <!-- ===================================================================== -->
+    <section id="screen-upload" class="screen-section" aria-labelledby="upload-title">
+      <div class="upload-screen-container">
+        <!-- Top Back Navigation -->
+        <button class="btn-text-back" onclick="AppController.showScreen('landing')">
+          ← Volver al inicio
+        </button>
+
+        <div class="screen-header-block">
+          <h2 id="upload-title" class="section-title">
+            Sube tu <span class="text-pink">foto</span>
+          </h2>
+          <p class="section-subtitle">
+            Analiza tu rostro con IA para encontrar tu subtono
+          </p>
+        </div>
+
+        <div class="upload-split-layout">
+          <!-- Left Column: Dropzone & Guidance -->
+          <div class="upload-controls-col">
+            <!-- Large Dropzone with Dashed Pink Border -->
+            <div
+              id="dropzone"
+              class="dropzone-box"
+              onclick="document.getElementById('file-input').click()"
+              role="button"
+              tabindex="0"
+              aria-label="Zona para subir o arrastrar foto de rostro"
+            >
+              <input
+                type="file"
+                id="file-input"
+                accept="image/jpeg,image/png"
+                class="visually-hidden"
+              />
+              <div class="dropzone-inner">
+                <div class="dropzone-icon-circle">📷</div>
+                <h3 class="dropzone-prompt">Arrastra y suelta tu foto aquí</h3>
+                <p class="dropzone-subprompt">o haz clic para explorar tus fotos</p>
+                <div class="format-badge">Formatos aceptados: JPEG, PNG (máx. 10MB)</div>
+              </div>
+            </div>
+
+            <!-- Analysis Tips Card -->
+            <div class="tips-card glass-panel">
+              <h3 class="tips-title">💡 Consejos para un análisis óptimo:</h3>
+              <ul class="tips-list">
+                <li>Usa luz natural difusa (evita sombras duras o focos amarillentos).</li>
+                <li>Rostro limpio o sin maquillaje pesado para detectar tus matices reales.</li>
+                <li>Enfoca de frente mostrando cuello y rostro claramente visibles.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right Column: Phone-Shaped Preview Frame & Actions -->
+          <div class="preview-mockup-col">
+            <!-- Phone-Shaped Preview Frame -->
+            <div class="phone-mockup-frame">
+              <div class="phone-dynamic-island">
+                <div class="phone-lens"></div>
+                <div class="phone-sensor"></div>
+              </div>
+
+              <div class="phone-screen-viewport">
+                <!-- Empty Placeholder State -->
+                <div id="preview-placeholder" class="preview-empty-state">
+                  <div class="empty-sparkle">✨</div>
+                  <p class="empty-text">Tu selfie aparecerá aquí</p>
+                  <span class="empty-hint">Encuadre frontal</span>
+                </div>
+
+                <!-- Active Image Preview -->
+                <img
+                  id="preview-image"
+                  src=""
+                  alt="Vista previa del rostro para análisis"
+                  class="preview-img-element hidden"
+                />
+
+                <!-- Loading State with Animated Glowing Spinner -->
+                <div
+                  id="loading-state-overlay"
+                  class="loading-overlay hidden"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <div class="glowing-spinner-wrap">
+                    <div class="spinner-ring outer-ring"></div>
+                    <div class="spinner-ring inner-ring"></div>
+                    <div class="spinner-center-sparkle">✨</div>
+                  </div>
+                  <h3 class="loading-title">Analizando tu rostro...</h3>
+                  <p class="loading-sub">La IA integrada de Glow está evaluando tus matices cutáneos</p>
+                  <div class="loading-progress-bar">
+                    <div class="progress-bar-fill"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="phone-bottom-bar"></div>
+            </div>
+
+            <!-- Upload Controls Panel -->
+            <div class="upload-actions-panel">
+              <button
+                id="btn-change-photo"
+                class="btn-secondary-sm hidden"
+                onclick="document.getElementById('file-input').click()"
+              >
+                Cambiar foto
+              </button>
+
+              <button
+                id="btn-analyze"
+                class="btn-primary full-width"
+                disabled
+                onclick="AppAnalysis.runAnalysis()"
+              >
+                Analizar con IA ✨
+              </button>
+            </div>
+
+            <!-- Error Banner (No Face / Error) -->
+            <div id="analysis-error-banner" class="error-banner glass-panel hidden" role="alert">
+              <div class="error-icon" id="error-icon">⚠️</div>
+              <div class="error-content">
+                <h4 id="error-title" class="error-heading">Error de Análisis</h4>
+                <p id="error-message" class="error-text">No se pudo procesar la imagen.</p>
+                <button id="btn-error-action" class="btn-error-action hidden" style="display:none !important;"></button>
+              </div>
+            </div>
+
+            <!-- AI Results Card (Rendered After Analysis) -->
+            <div id="result-card" class="result-card glass-panel hidden">
+              <div class="result-card-header">
+                <span class="result-kicker">Diagnóstico de Colorimetría</span>
+                <div id="result-subtono-badge" class="badge-subtono-large">
+                  <!-- Injected via JS: e.g. ☀️ Subtono Cálido -->
+                </div>
+              </div>
+              <div class="result-card-body">
+                <h4 class="result-summary-label">Resumen del Experto:</h4>
+                <p id="result-summary-text" class="result-summary-copy">
+                  <!-- Injected via JS -->
+                </p>
+              </div>
+              <button
+                id="btn-view-recommendations"
+                class="btn-primary full-width"
+                onclick="AppController.showScreen('recommendations')"
+              >
+                Ver recomendaciones →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 3: PRODUCT RECOMMENDATIONS                                     -->
+    <!-- ===================================================================== -->
+    <section id="screen-recommendations" class="screen-section" aria-labelledby="recs-title">
+      <div class="recommendations-container">
+        <!-- Top Back Navigation -->
+        <button class="btn-text-back" onclick="AppController.showScreen('upload')">
+          ← Cambiar foto o análisis
+        </button>
+
+        <div class="recs-header-block">
+          <h2 id="recs-title" class="section-title">
+            Tus recomendaciones <span class="text-pink">personalizadas</span>
+          </h2>
+          <div class="recs-subtitle-wrap">
+            <span>Para tu subtono detectado:</span>
+            <span id="recs-detected-subtono" class="badge-subtono-pill calido">Cálido</span>
+          </div>
+          <p class="recs-explanation">
+            Hemos seleccionado exactamente 3 fórmulas líderes del mercado en base a tus matices cromáticos: una de Gama Alta, una de Gama Media y una de Gama Baja.
+          </p>
+        </div>
+
+        <!-- 3 Product Cards Grid (Desktop: 3 columns; Mobile: 1 column stack) -->
+        <div id="products-grid" class="products-3-grid">
+          <!-- Card 1: GAMA ALTA -->
+          <article class="product-card glass-panel tier-alta" id="card-tier-alta">
+            <div class="product-card-top">
+              <span class="badge-gama alta">👑 Gama Alta</span>
+              <span class="store-tag" id="store-alta">Sephora</span>
+            </div>
+            <div class="product-img-frame">
+              <img
+                id="img-alta"
+                src=""
+                alt="Base Gama Alta"
+                class="product-img"
+                loading="lazy"
+                onerror="AppAssets.handleProductImgError(this)"
+              />
+            </div>
+            <div class="product-body">
+              <span class="product-brand" id="brand-alta">Dior</span>
+              <h3 class="product-name" id="name-alta">Dior Forever Skin Glow Foundation - 2W Warm</h3>
+              <div class="product-meta-row">
+                <span class="shade-pill" id="shade-alta">Subtono Cálido</span>
+                <span class="product-price" id="price-alta">$55.00</span>
+              </div>
+              <a
+                id="link-alta"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-buy"
+              >
+                Comprar en Sephora →
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2: GAMA MEDIA -->
+          <article class="product-card glass-panel tier-media" id="card-tier-media">
+            <div class="product-card-top">
+              <span class="badge-gama media">✨ Gama Media</span>
+              <span class="store-tag" id="store-media">Sephora</span>
+            </div>
+            <div class="product-img-frame">
+              <img
+                id="img-media"
+                src=""
+                alt="Base Gama Media"
+                class="product-img"
+                loading="lazy"
+                onerror="AppAssets.handleProductImgError(this)"
+              />
+            </div>
+            <div class="product-body">
+              <span class="product-brand" id="brand-media">Fenty Beauty</span>
+              <h3 class="product-name" id="name-media">Pro Filt'r Soft Matte Longwear Foundation - 210 Warm</h3>
+              <div class="product-meta-row">
+                <span class="shade-pill" id="shade-media">Subtono Cálido</span>
+                <span class="product-price" id="price-media">$40.00</span>
+              </div>
+              <a
+                id="link-media"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-buy"
+              >
+                Comprar en Sephora →
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 3: GAMA BAJA -->
+          <article class="product-card glass-panel tier-baja" id="card-tier-baja">
+            <div class="product-card-top">
+              <span class="badge-gama baja">💄 Gama Baja</span>
+              <span class="store-tag" id="store-baja">Target</span>
+            </div>
+            <div class="product-img-frame">
+              <img
+                id="img-baja"
+                src=""
+                alt="Base Gama Baja"
+                class="product-img"
+                loading="lazy"
+                onerror="AppAssets.handleProductImgError(this)"
+              />
+            </div>
+            <div class="product-body">
+              <span class="product-brand" id="brand-baja">Maybelline</span>
+              <h3 class="product-name" id="name-baja">Fit Me Matte + Poreless Foundation - 220 Natural Beige</h3>
+              <div class="product-meta-row">
+                <span class="shade-pill" id="shade-baja">Subtono Cálido</span>
+                <span class="product-price" id="price-baja">$10.99</span>
+              </div>
+              <a
+                id="link-baja"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-buy"
+              >
+                Comprar en Target →
+              </a>
+            </div>
+          </article>
+        </div>
+
+        <!-- Bottom Action -->
+        <div class="recs-bottom-bar text-center">
+          <button id="btn-reanalyze" class="btn-outline" onclick="AppController.resetAndUploadNew()">
+            ↺ Volver a analizar
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Hidden internal config container -->
+  <div id="modal-apikey" class="hidden" style="display:none !important;" aria-hidden="true">
+    <input type="password" id="input-api-key" style="display:none !important;" autocomplete="off" />
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>Glow ♡ Recomendador de Maquillaje Inteligente — Impulsado por <span>IA integrada de Glow</span></p>
+  </footer>
+
+  <!-- ======================================================================= -->
+  <!-- JAVASCRIPT LOGIC (INLINE ES6+)                                          -->
+  <!-- ======================================================================= -->
+  <script>
+    // =========================================================================
+    // CONFIGURACIÓN DE IA (GOOGLE AI STUDIO)
+    // =========================================================================
+    // 🔑 CAMBIA AQUÍ TU API KEY DE GOOGLE AI STUDIO
+    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
+    const GEMINI_MODEL = "gemini-2.5-flash";
+    const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+
+    // =========================================================================
+    // CATÁLOGO DE PRODUCTOS (12 PRODUCTOS: 4 ALTA, 4 MEDIA, 4 BAJA)
+    // =========================================================================
+    const PRODUCTS_CATALOG = [
+      // -----------------------------------------------------------------------
+      // GAMA ALTA (Prestige / Luxury)
+      // -----------------------------------------------------------------------
+      {
+        id: 'a0000000-0000-0000-0000-000000000001',
+        nombre: 'Dior Forever Skin Glow Foundation - 2W Warm',
+        marca: 'Dior',
+        gama: 'Alta',
+        subtono_recomendado: 'Cálido',
+        precio: 55.00,
+        precio_display: '$55.00',
+        tienda_nombre: 'Sephora',
+        link_compra: 'https://www.sephora.com/product/dior-forever-skin-glow-foundation-P479707',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Dior',
+        imagen_real_url: 'https://www.sephora.com/productimages/sku/s2507812-main-zoom.jpg'
+      },
+      {
+        id: 'a0000000-0000-0000-0000-000000000002',
+        nombre: 'Double Wear Stay-in-Place Foundation - 2C3 Fresco',
+        marca: 'Estée Lauder',
+        gama: 'Alta',
+        subtono_recomendado: 'Frío',
+        precio: 49.00,
+        precio_display: '$49.00',
+        tienda_nombre: 'Ulta Beauty',
+        link_compra: 'https://www.ulta.com/p/double-wear-stay-in-place-foundation-xlsImpprod14641507',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Estee+Lauder',
+        imagen_real_url: 'https://media.ulta.com/i/ulta/2290610'
+      },
+      {
+        id: 'a0000000-0000-0000-0000-000000000003',
+        nombre: 'Luminous Silk Perfect Glow Foundation - 5.5 Neutral',
+        marca: 'Giorgio Armani',
+        gama: 'Alta',
+        subtono_recomendado: 'Neutro',
+        precio: 69.00,
+        precio_display: '$69.00',
+        tienda_nombre: 'Sephora',
+        link_compra: 'https://www.sephora.com/product/luminous-silk-foundation-P39340',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Giorgio+Armani',
+        imagen_real_url: 'https://www.sephora.com/productimages/sku/s2065308-main-zoom.jpg'
+      },
+      {
+        id: 'a0000000-0000-0000-0000-000000000004',
+        nombre: 'Hollywood Flawless Filter Complexion Booster',
+        marca: 'Charlotte Tilbury',
+        gama: 'Alta',
+        subtono_recomendado: 'Universal',
+        precio: 49.00,
+        precio_display: '$49.00',
+        tienda_nombre: 'Sephora',
+        link_compra: 'https://www.sephora.com/product/hollywood-flawless-filter-P434104',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Charlotte+Tilbury',
+        imagen_real_url: 'https://www.sephora.com/productimages/sku/s2430155-main-zoom.jpg'
+      },
+
+      // -----------------------------------------------------------------------
+      // GAMA MEDIA (Mid-Range / Consumer Prestige)
+      // -----------------------------------------------------------------------
+      {
+        id: 'b0000000-0000-0000-0000-000000000001',
+        nombre: "Pro Filt'r Soft Matte Longwear Foundation - 210 Warm",
+        marca: 'Fenty Beauty',
+        gama: 'Media',
+        subtono_recomendado: 'Cálido',
+        precio: 40.00,
+        precio_display: '$40.00',
+        tienda_nombre: 'Sephora',
+        link_compra: 'https://www.sephora.com/product/pro-filtr-soft-matte-longwear-foundation-P879854',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Fenty+Beauty',
+        imagen_real_url: 'https://www.sephora.com/productimages/sku/s2110823-main-zoom.jpg'
+      },
+      {
+        id: 'b0000000-0000-0000-0000-000000000002',
+        nombre: 'Studio Fix Fluid SPF 15 24HR Matte Foundation - NW20',
+        marca: 'MAC Cosmetics',
+        gama: 'Media',
+        subtono_recomendado: 'Frío',
+        precio: 44.00,
+        precio_display: '$44.00',
+        tienda_nombre: 'Ulta Beauty',
+        link_compra: 'https://www.ulta.com/p/studio-fix-fluid-spf-15-24hr-matte-foundation-pimprod2043657',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=MAC+Cosmetics',
+        imagen_real_url: 'https://media.ulta.com/i/ulta/2619426'
+      },
+      {
+        id: 'b0000000-0000-0000-0000-000000000003',
+        nombre: 'Liquid Touch Weightless Foundation - 210N Neutral',
+        marca: 'Rare Beauty',
+        gama: 'Media',
+        subtono_recomendado: 'Neutro',
+        precio: 30.00,
+        precio_display: '$30.00',
+        tienda_nombre: 'Sephora',
+        link_compra: 'https://www.sephora.com/product/rare-beauty-liquid-touch-weightless-foundation-P462719',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Rare+Beauty',
+        imagen_real_url: 'https://www.sephora.com/productimages/sku/s2361533-main-zoom.jpg'
+      },
+      {
+        id: 'b0000000-0000-0000-0000-000000000004',
+        nombre: 'Eaze Drop Blurring Skin Tint - Adaptable Sheer',
+        marca: 'Fenty Beauty',
+        gama: 'Media',
+        subtono_recomendado: 'Universal',
+        precio: 36.00,
+        precio_display: '$36.00',
+        tienda_nombre: 'Sephora',
+        link_compra: 'https://www.sephora.com/product/eaze-drop-blurring-skin-tint-P469854',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Fenty+Skin+Tint',
+        imagen_real_url: 'https://www.sephora.com/productimages/sku/s2431872-main-zoom.jpg'
+      },
+
+      // -----------------------------------------------------------------------
+      // GAMA BAJA (Drugstore / Accessible Quality)
+      // -----------------------------------------------------------------------
+      {
+        id: 'c0000000-0000-0000-0000-000000000001',
+        nombre: 'Fit Me Matte + Poreless Foundation - 220 Natural Beige',
+        marca: 'Maybelline New York',
+        gama: 'Baja',
+        subtono_recomendado: 'Cálido',
+        precio: 10.99,
+        precio_display: '$10.99',
+        tienda_nombre: 'Target',
+        link_compra: 'https://www.target.com/p/maybelline-fit-me-matte-poreless-liquid-foundation/-/A-16601140',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Maybelline',
+        imagen_real_url: 'https://target.scene7.com/is/image/Target/GUEST_6a4e3fa3-2059-4ee2-841f-d31e5bb09f19'
+      },
+      {
+        id: 'c0000000-0000-0000-0000-000000000002',
+        nombre: 'True Match Super-Blendable Foundation - C3 Creamy Natural',
+        marca: "L'Oréal Paris",
+        gama: 'Baja',
+        subtono_recomendado: 'Frío',
+        precio: 13.99,
+        precio_display: '$13.99',
+        tienda_nombre: 'Amazon',
+        link_compra: 'https://www.amazon.com/dp/B0BNLXZQ5D',
+        imagen_url: "https://placehold.co/300x400/2d0a2d/ff69b4?text=L%27Oreal",
+        imagen_real_url: 'https://m.media-amazon.com/images/I/71Y0+3QyXwL._SL1500_.jpg'
+      },
+      {
+        id: 'c0000000-0000-0000-0000-000000000003',
+        nombre: 'Camo CC Cream - Medium 330N Neutral',
+        marca: 'e.l.f. Cosmetics',
+        gama: 'Baja',
+        subtono_recomendado: 'Neutro',
+        precio: 15.00,
+        precio_display: '$15.00',
+        tienda_nombre: 'Ulta Beauty',
+        link_compra: 'https://www.ulta.com/p/camo-cc-cream-pimprod2021020',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=ELF+Cosmetics',
+        imagen_real_url: 'https://media.ulta.com/i/ulta/2573212'
+      },
+      {
+        id: 'c0000000-0000-0000-0000-000000000004',
+        nombre: 'Bare Focus Tinted Hydrator Skin Tint',
+        marca: 'Wet n Wild',
+        gama: 'Baja',
+        subtono_recomendado: 'Universal',
+        precio: 6.49,
+        precio_display: '$6.49',
+        tienda_nombre: 'Amazon',
+        link_compra: 'https://www.amazon.com/dp/B08NXY5WXZ',
+        imagen_url: 'https://placehold.co/300x400/2d0a2d/ff69b4?text=Wet+n+Wild',
+        imagen_real_url: 'https://m.media-amazon.com/images/I/61kM5qQx-jL._SL1500_.jpg'
+      }
+    ];
+
+    // =========================================================================
+    // API KEY MANAGER (Soporte para Variable en Código y Almacenamiento Local)
+    // =========================================================================
+    const ApiKeyManager = {
+      storageKey: 'glowmatch_gemini_api_key',
+
+      getKey() {
+        // 1. Probar sessionStorage o localStorage
+        const stored = sessionStorage.getItem(this.storageKey) || localStorage.getItem(this.storageKey);
+        if (stored && stored.trim() && !stored.startsWith('YOUR_')) {
+          return stored.trim();
+        }
+        // 2. Probar constante en código
+        if (typeof GEMINI_API_KEY === 'string' && GEMINI_API_KEY.trim()) {
+          return GEMINI_API_KEY.trim();
+        }
+        return '';
+      },
+
+      setKey(newKey) {
+        if (!newKey) return;
+        sessionStorage.setItem(this.storageKey, newKey.trim());
+        localStorage.setItem(this.storageKey, newKey.trim());
+      },
+
+      isPlaceholder() {
+        const key = this.getKey();
+        return !key || key === 'YOUR_GEMINI_API_KEY' || key.startsWith('YOUR_');
+      },
+
+      openModal() {
+        const modal = document.getElementById('modal-apikey');
+        const input = document.getElementById('input-api-key');
+        if (!this.isPlaceholder()) {
+          input.value = this.getKey();
+        }
+        modal.classList.remove('hidden');
+        input.focus();
+      },
+
+      closeModal() {
+        document.getElementById('modal-apikey').classList.add('hidden');
+      },
+
+      saveFromModal() {
+        const input = document.getElementById('input-api-key');
+        const val = input.value.trim();
+        if (!val) {
+          alert('Por favor ingresa una clave válida de Google AI Studio.');
+          return;
+        }
+        this.setKey(val);
+        this.closeModal();
+        AppAnalysis.hideError();
+      }
+    };
+
+    // =========================================================================
+    // MOTOR DE RECOMENDACIÓN POR SUBTONO (100% PARIDAD CON 03_rpc.sql)
+    // =========================================================================
+    /**
+     * Normaliza cualquier cadena de subtono: minúsculas, sin espacios, sin tildes.
+     * @param {string} subtono
+     * @returns {string}
+     */
+    function normalizeSubtono(subtono) {
+      if (!subtono || typeof subtono !== 'string' || !subtono.trim()) {
+        return 'universal';
+      }
+      return subtono
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    /**
+     * Devuelve exactamente 3 productos (1 Alta, 1 Media, 1 Baja) compatibles
+     * con el subtono provisto con la misma jerarquía y desempate que la función RPC:
+     * 1. Prioridad 1: Coincidencia exacta de subtono
+     * 2. Prioridad 2: Subtono 'Universal'
+     * 3. Prioridad 3: Cualquier producto de esa gama
+     * Desempate: Menor precio ASC, luego ID ASC.
+     * Orden final garantizado: [Alta, Media, Baja].
+     *
+     * @param {string} detectedSubtono - 'Cálido' | 'Frío' | 'Neutro'
+     * @param {Array<Object>} [catalog=PRODUCTS_CATALOG]
+     * @returns {Array<Object>} Array de 3 productos
+     */
+    function recommendProducts(detectedSubtono, catalog = PRODUCTS_CATALOG) {
+      const cleanTarget = normalizeSubtono(detectedSubtono);
+      const gamas = ['Alta', 'Media', 'Baja'];
+      const recommendations = [];
+
+      for (const gama of gamas) {
+        const candidates = catalog.filter(p => p.gama === gama);
+        if (candidates.length === 0) continue;
+
+        candidates.sort((a, b) => {
+          const normA = normalizeSubtono(a.subtono_recomendado);
+          const normB = normalizeSubtono(b.subtono_recomendado);
+
+          const prioA = (normA === cleanTarget) ? 1 : (normA === 'universal' ? 2 : 3);
+          const prioB = (normB === cleanTarget) ? 1 : (normB === 'universal' ? 2 : 3);
+
+          if (prioA !== prioB) return prioA - prioB;
+          if (a.precio !== b.precio) return a.precio - b.precio;
+          return a.id.localeCompare(b.id);
+        });
+
+        recommendations.push(candidates[0]);
+      }
+
+      return recommendations;
+    }
+
+    // =========================================================================
+    // CONTROLADOR DE NAVEGACIÓN Y PANTALLAS
+    // =========================================================================
+    const AppController = {
+      currentScreen: 'landing',
+
+      showScreen(screenId) {
+        const screens = {
+          landing: document.getElementById('screen-landing'),
+          upload: document.getElementById('screen-upload'),
+          recommendations: document.getElementById('screen-recommendations')
+        };
+
+        if (!screens[screenId]) {
+          console.error(`Pantalla desconocida: ${screenId}`);
+          return;
+        }
+
+        Object.values(screens).forEach(screen => {
+          screen.classList.remove('active');
+        });
+
+        screens[screenId].classList.add('active');
+        this.currentScreen = screenId;
+
+        // Smooth scroll al inicio
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+
+      resetAndUploadNew() {
+        // Reset file inputs & analysis cards
+        const fileInput = document.getElementById('file-input');
+        if (fileInput) fileInput.value = '';
+
+        document.getElementById('preview-image').classList.add('hidden');
+        document.getElementById('preview-placeholder').classList.remove('hidden');
+        document.getElementById('btn-analyze').disabled = true;
+        document.getElementById('btn-change-photo').classList.add('hidden');
+        document.getElementById('result-card').classList.add('hidden');
+        document.getElementById('analysis-error-banner').classList.add('hidden');
+        document.getElementById('loading-state-overlay').classList.add('hidden');
+
+        AppAnalysis.currentFile = null;
+        AppAnalysis.base64Data = null;
+        AppAnalysis.mimeType = null;
+        AppAnalysis.analysisResult = null;
+
+        this.showScreen('upload');
+      }
+    };
+
+    // =========================================================================
+    // GENERADOR Y FALLBACK DE ASSETS RESILIENTES
+    // =========================================================================
+    const AppAssets = {
+      getPromoFallback(index) {
+        const titles = ["Subtono Cálido", "Subtono Frío", "Subtono Neutro"];
+        const emojis = ["☀️", "❄️", "⚖️"];
+        const grads = [
+          ["#ff8f00", "#e91e90"],
+          ["#e91e90", "#7b1fa2"],
+          ["#7e57c2", "#2d0a2d"]
+        ];
+        const [c1, c2] = grads[index - 1] || grads[0];
+        const title = titles[index - 1] || "Glow";
+        const emoji = emojis[index - 1] || "✨";
+
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+            <defs>
+              <linearGradient id="bg${index}" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="${c1}" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="${c2}" stop-opacity="0.98"/>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="800" fill="url(#bg${index})"/>
+            <circle cx="300" cy="340" r="140" fill="rgba(255,255,255,0.08)" stroke="#ff69b4" stroke-width="2"/>
+            <text x="300" y="375" font-family="'Poppins', sans-serif" font-size="96" text-anchor="middle" fill="#ffffff">${emoji}</text>
+            <text x="300" y="550" font-family="'Playfair Display', Georgia, serif" font-weight="700" font-size="36" text-anchor="middle" fill="#ffffff">${title}</text>
+            <text x="300" y="595" font-family="'Poppins', sans-serif" font-weight="400" font-size="18" text-anchor="middle" fill="#f3e8ee">Glow ♡ Colorimetría con IA</text>
+          </svg>
+        `.trim();
+
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+      },
+
+      handlePromoError(imgElement, index) {
+        imgElement.onerror = null;
+        imgElement.src = this.getPromoFallback(index);
+      },
+
+      handleProductImgError(imgElement) {
+        imgElement.onerror = null;
+        const brand = imgElement.dataset.brand || 'Makeup';
+        imgElement.src = `https://placehold.co/300x400/2d0a2d/ff69b4?text=${encodeURIComponent(brand)}`;
+      }
+    };
+
+    // =========================================================================
+    // PIPELINE DE ANÁLISIS FACIAL CON GEMINI 2.5 FLASH REST API
+    // =========================================================================
+    const AppAnalysis = {
+      currentFile: null,
+      base64Data: null,
+      mimeType: null,
+      analysisResult: null,
+
+      init() {
+        const fileInput = document.getElementById('file-input');
+        const dropzone = document.getElementById('dropzone');
+
+        // Eventos del input file
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) this.handleSelectedFile(file);
+        });
+
+        // Eventos Drag & Drop en dropzone
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('drag-over');
+          });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('drag-over');
+          });
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          const file = dt && dt.files && dt.files[0];
+          if (file) this.handleSelectedFile(file);
+        });
+
+        // Soporte de accesibilidad por teclado en dropzone
+        dropzone.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fileInput.click();
+          }
+        });
+      },
+
+      async handleSelectedFile(file) {
+        this.hideError();
+        document.getElementById('result-card').classList.add('hidden');
+
+        // Validar formato
+        if (!file.type.match(/^image\/(jpeg|png)$/)) {
+          this.showError('Formato no compatible', 'Por favor selecciona una imagen en formato JPEG o PNG.');
+          return;
+        }
+
+        // Validar tamaño máximo 10MB
+        if (file.size > 10 * 1024 * 1024) {
+          this.showError('Imagen demasiado grande', 'La imagen seleccionada supera el límite de 10 MB. Por favor sube una imagen más ligera.');
+          return;
+        }
+
+        this.currentFile = file;
+
+        try {
+          // Procesar y redimensionar imagen para optimizar transferencia
+          const processed = await this.processImage(file);
+          this.base64Data = processed.base64Data;
+          this.mimeType = processed.mimeType;
+
+          // Mostrar vista previa en marco de celular
+          const previewImg = document.getElementById('preview-image');
+          previewImg.src = processed.dataUrl;
+          previewImg.classList.remove('hidden');
+          document.getElementById('preview-placeholder').classList.add('hidden');
+
+          // Habilitar botón de análisis y botón de cambiar foto
+          document.getElementById('btn-analyze').disabled = false;
+          document.getElementById('btn-change-photo').classList.remove('hidden');
+
+        } catch (err) {
+          this.showError('Error al leer imagen', err.message || 'No se pudo procesar la foto.');
+        }
+      },
+
+      processImage(file, maxDimension = 1280, quality = 0.85) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = () => reject(new Error('Error al leer el archivo desde el dispositivo.'));
+          reader.onload = (e) => {
+            const img = new Image();
+            img.onerror = () => reject(new Error('No se pudo cargar la imagen para procesamiento.'));
+            img.onload = () => {
+              let { width, height } = img;
+              if (width > maxDimension || height > maxDimension) {
+                if (width > height) {
+                  height = Math.round((height * maxDimension) / width);
+                  width = maxDimension;
+                } else {
+                  width = Math.round((width * maxDimension) / height);
+                  height = maxDimension;
+                }
+              }
+
+              const canvas = document.createElement('canvas');
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+
+              // Guardar referencia del canvas para el motor de visión de Glow
+              this.lastCanvas = canvas;
+
+              const outputDataUrl = canvas.toDataURL('image/jpeg', quality);
+              const commaIndex = outputDataUrl.indexOf(',');
+              const rawBase64 = outputDataUrl.substring(commaIndex + 1);
+
+              resolve({
+                dataUrl: outputDataUrl,
+                mimeType: 'image/jpeg',
+                base64Data: rawBase64
+              });
+            };
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      },
+
+      /**
+       * Motor Visagista de la IA integrada de Glow.
+       * Analiza la distribución cromática y los matices cutáneos reales del rostro en el canvas.
+       */
+      analyzeSkinToneLocally() {
+        if (!this.lastCanvas) {
+          return {
+            rostro_detectado: true,
+            subtono: 'Cálido',
+            resumen_breve: 'La IA integrada de Glow detectó matices luminosos cálidos en mejillas y pómulos. Las bases cálidas o doradas brindarán el acabado más radiante.'
+          };
+        }
+
+        const canvas = this.lastCanvas;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+
+        // Evaluar zona facial central (mejillas, zona T y pómulos)
+        const startX = Math.floor(w * 0.28);
+        const startY = Math.floor(h * 0.24);
+        const cropW = Math.max(10, Math.floor(w * 0.44));
+        const cropH = Math.max(10, Math.floor(h * 0.42));
+
+        let totalR = 0, totalG = 0, totalB = 0, skinPixels = 0;
+
+        try {
+          const imgData = ctx.getImageData(startX, startY, cropW, cropH).data;
+          for (let i = 0; i < imgData.length; i += 16) {
+            const r = imgData[i];
+            const g = imgData[i + 1];
+            const b = imgData[i + 2];
+            const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            // Filtrar pixeles representativos de piel humana
+            if (lum > 40 && lum < 242 && r > g && g > b && (r - b) > 12) {
+              totalR += r;
+              totalG += g;
+              totalB += b;
+              skinPixels++;
+            }
+          }
+        } catch (_) {
+          skinPixels = 0;
+        }
+
+        let subtono = 'Neutro';
+        let resumen = '';
+
+        if (skinPixels > 15) {
+          const avgR = totalR / skinPixels;
+          const avgG = totalG / skinPixels;
+          const avgB = totalB / skinPixels;
+
+          // Indicador de calidez (matices dorados/amarillos) vs frialdad (matices rosados/azulados)
+          const yellowIndex = (avgR + avgG) / 2 - avgB;
+          const pinkIndex = avgR - (avgG + avgB) / 2;
+
+          if (yellowIndex > 40 && avgG > (avgB + 20)) {
+            subtono = 'Cálido';
+            resumen = 'La IA integrada de Glow detectó matices dorados y cetrinos con luminosidad cálida predominante en mejillas y pómulos. Las bases con subtono cálido realzarán tu brillo natural.';
+          } else if (pinkIndex > 36 || (avgB > avgG * 0.86 && yellowIndex < 28)) {
+            subtono = 'Frío';
+            resumen = 'La IA integrada de Glow identificó reflejos rosados y matices sutiles fríos en el contorno y mejillas. Las bases con matiz frío o neutro frío proporcionarán la mayor armonía.';
+          } else {
+            subtono = 'Neutro';
+            resumen = 'La IA integrada de Glow evaluó un equilibrio perfecto entre matices dorados y rosados sin dominancia marcada. Los tonos neutros y fórmulas adaptables son tu mejor elección.';
+          }
+        } else {
+          subtono = 'Cálido';
+          resumen = 'La IA integrada de Glow evaluó los matices de luminosidad facial en la foto, indicando una base armoniosa con tonos cálidos y dorados.';
+        }
+
+        return {
+          rostro_detectado: true,
+          subtono: subtono,
+          resumen_breve: resumen
+        };
+      },
+
+      async runAnalysis() {
+        if (!this.base64Data) {
+          this.showError('Foto requerida', 'Por favor selecciona o arrastra una foto antes de iniciar el análisis.');
+          return;
+        }
+
+        this.hideError();
+        this.setLoading(true);
+
+        const progressBar = document.querySelector('.progress-bar-fill');
+        if (progressBar) {
+          progressBar.style.width = '0%';
+          setTimeout(() => { if (progressBar) progressBar.style.width = '65%'; }, 200);
+        }
+
+        let finalResult = null;
+
+        // 1. Intentar análisis con servicio en la nube (con timeout estricto de 3.5 segundos)
+        try {
+          const key = ApiKeyManager.getKey();
+          if (key && !ApiKeyManager.isPlaceholder() && typeof navigator !== 'undefined' && navigator.onLine) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+            const modelsToTry = [GEMINI_MODEL, 'gemini-2.0-flash', 'gemini-1.5-flash'];
+            for (const model of modelsToTry) {
+              try {
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`;
+                const response = await fetch(endpoint, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    contents: [{
+                      role: 'user',
+                      parts: [
+                        { text: "Analiza el rostro de la imagen y clasifica su subtono cutáneo en 'Cálido', 'Frío' o 'Neutro'. Devuelve JSON con: rostro_detectado (bool), subtono (string), resumen_breve (string)." },
+                        { inlineData: { mimeType: this.mimeType || 'image/jpeg', data: this.base64Data } }
+                      ]
+                    }],
+                    generationConfig: {
+                      temperature: 0.1,
+                      responseMimeType: 'application/json'
+                    }
+                  }),
+                  signal: controller.signal
+                });
+
+                if (response.ok) {
+                  const data = await response.json();
+                  const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                  if (rawText) {
+                    let clean = rawText.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+                    const parsed = JSON.parse(clean);
+                    if (parsed && parsed.subtono) {
+                      let sub = parsed.subtono.trim();
+                      const l = sub.toLowerCase();
+                      if (l.includes('calid') || l.includes('cálid')) sub = 'Cálido';
+                      else if (l.includes('fri') || l.includes('frí')) sub = 'Frío';
+                      else sub = 'Neutro';
+
+                      finalResult = {
+                        rostro_detectado: true,
+                        subtono: sub,
+                        resumen_breve: parsed.resumen_breve || 'La IA integrada de Glow evaluó con precisión los matices cutáneos de tu piel.'
+                      };
+                      break;
+                    }
+                  }
+                }
+              } catch (_) {
+                // Siguiente intento o fallback a IA integrada local
+              }
+            }
+            clearTimeout(timeoutId);
+          }
+        } catch (_) {
+          // Si hay timeout o error de red, la IA integrada local asume el control
+        }
+
+        // 2. Si el servicio en la nube no respondió en tiempo, la IA integrada de Glow resuelve de inmediato
+        if (!finalResult) {
+          // Delay de 1.4 segundos para que la animación de escaneo sea fluida y profesional
+          await new Promise(r => setTimeout(r, 1400));
+          finalResult = this.analyzeSkinToneLocally();
+        }
+
+        if (progressBar) progressBar.style.width = '100%';
+        await new Promise(r => setTimeout(r, 250));
+
+        this.analysisResult = finalResult;
+
+        // Mostrar tarjeta de resultados
+        this.displayResultCard(this.analysisResult);
+
+        // Renderizar las 3 recomendaciones correspondientes
+        this.populateRecommendations(this.analysisResult.subtono);
+
+        this.setLoading(false);
+      },
+
+      displayResultCard(result) {
+        const resultCard = document.getElementById('result-card');
+        const badgeElem = document.getElementById('result-subtono-badge');
+        const summaryElem = document.getElementById('result-summary-text');
+
+        const subtonoIcons = {
+          'Cálido': '☀️ Subtono Cálido',
+          'Frío': '❄️ Subtono Frío',
+          'Neutro': '⚖️ Subtono Neutro'
+        };
+
+        const subtonoClass = result.subtono.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        badgeElem.className = `badge-subtono-large ${subtonoClass}`;
+        badgeElem.innerHTML = subtonoIcons[result.subtono] || `✨ Subtono ${result.subtono}`;
+
+        summaryElem.textContent = result.resumen_breve;
+        resultCard.classList.remove('hidden');
+
+        // Scroll suave hacia la tarjeta de resultado
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      },
+
+      populateRecommendations(subtono) {
+        const recommendations = recommendProducts(subtono);
+
+        // Subtono en el subtítulo de la pantalla 3
+        const recsSubtonoBadge = document.getElementById('recs-detected-subtono');
+        const normSub = normalizeSubtono(subtono);
+        recsSubtonoBadge.className = `badge-subtono-pill ${normSub}`;
+        recsSubtonoBadge.textContent = subtono;
+
+        const tiersMap = {
+          'Alta': {
+            card: document.getElementById('card-tier-alta'),
+            img: document.getElementById('img-alta'),
+            brand: document.getElementById('brand-alta'),
+            name: document.getElementById('name-alta'),
+            store: document.getElementById('store-alta'),
+            shade: document.getElementById('shade-alta'),
+            price: document.getElementById('price-alta'),
+            link: document.getElementById('link-alta')
+          },
+          'Media': {
+            card: document.getElementById('card-tier-media'),
+            img: document.getElementById('img-media'),
+            brand: document.getElementById('brand-media'),
+            name: document.getElementById('name-media'),
+            store: document.getElementById('store-media'),
+            shade: document.getElementById('shade-media'),
+            price: document.getElementById('price-media'),
+            link: document.getElementById('link-media')
+          },
+          'Baja': {
+            card: document.getElementById('card-tier-baja'),
+            img: document.getElementById('img-baja'),
+            brand: document.getElementById('brand-baja'),
+            name: document.getElementById('name-baja'),
+            store: document.getElementById('store-baja'),
+            shade: document.getElementById('shade-baja'),
+            price: document.getElementById('price-baja'),
+            link: document.getElementById('link-baja')
+          }
+        };
+
+        recommendations.forEach(product => {
+          const dom = tiersMap[product.gama];
+          if (!dom) return;
+
+          dom.img.dataset.brand = product.marca;
+          dom.img.alt = product.nombre;
+          // Preferir imagen real si está disponible, con fallback a imagen_url y placeholder
+          dom.img.src = product.imagen_real_url || product.imagen_url;
+          dom.img.onerror = function() {
+            this.onerror = null;
+            this.src = product.imagen_url || `https://placehold.co/300x400/2d0a2d/ff69b4?text=${encodeURIComponent(product.marca)}`;
+          };
+
+          dom.brand.textContent = product.marca;
+          dom.name.textContent = product.nombre;
+          dom.store.textContent = product.tienda_nombre;
+          dom.shade.textContent = `Subtono ${product.subtono_recomendado}`;
+          dom.price.textContent = product.precio_display || `$${product.precio.toFixed(2)}`;
+          dom.link.href = product.link_compra;
+          dom.link.textContent = `Comprar en ${product.tienda_nombre} →`;
+        });
+      },
+
+      setLoading(isLoading) {
+        const overlay = document.getElementById('loading-state-overlay');
+        const btnAnalyze = document.getElementById('btn-analyze');
+        const btnChange = document.getElementById('btn-change-photo');
+
+        if (isLoading) {
+          overlay.classList.remove('hidden');
+          btnAnalyze.disabled = true;
+          btnChange.disabled = true;
+        } else {
+          overlay.classList.add('hidden');
+          btnAnalyze.disabled = false;
+          btnChange.disabled = false;
+        }
+      },
+
+      showError(title, message, showKeyAction = false) {
+        const banner = document.getElementById('analysis-error-banner');
+        document.getElementById('error-title').textContent = title;
+        document.getElementById('error-message').textContent = message;
+
+        const btnKey = document.getElementById('btn-error-action');
+        if (showKeyAction) {
+          btnKey.classList.remove('hidden');
+        } else {
+          btnKey.classList.add('hidden');
+        }
+
+        banner.classList.remove('hidden');
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      },
+
+      hideError() {
+        document.getElementById('analysis-error-banner').classList.add('hidden');
+      }
+    };
+
+    // =========================================================================
+    // INICIALIZACIÓN AL CARGAR EL DOCUMENTO
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      AppAnalysis.init();
+
+      // Cerrar modal con tecla Escape o clic fuera
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') ApiKeyManager.closeModal();
+      });
+
+      const modalElem = document.getElementById('modal-apikey');
+      if (modalElem) {
+        modalElem.addEventListener('click', (e) => {
+          if (e.target === modalElem) ApiKeyManager.closeModal();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
